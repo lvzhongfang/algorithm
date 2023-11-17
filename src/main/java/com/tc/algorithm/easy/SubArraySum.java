@@ -1,4 +1,4 @@
-package com.tc.algorithm.subarray.sum;
+package com.tc.algorithm.easy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
