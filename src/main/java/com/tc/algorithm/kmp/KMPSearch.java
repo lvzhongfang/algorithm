@@ -2,7 +2,7 @@ package com.tc.algorithm.kmp;
 
 /**
  * desc KMP字符串匹配算法
- *
+ * KMP 算法（Knuth-Morris-Pratt 算法）是一个著名的字符串匹配算法
  * @author lvzf 2023年11月20日
  */
 public class KMPSearch {
@@ -48,39 +48,9 @@ public class KMPSearch {
         return -1;
     }
 
-    public int change(int amount, int[] coins) {
-        int max = Integer.MAX_VALUE;
-        //递推表达式
-        int[] dp = new int[amount + 1];
-        //初始化dp数组，表示金额为0时只有一种情况，也就是什么都不装
-        //初始化dp数组为最大值
-        for (int j = 0; j < dp.length; j++) {
-            dp[j] = max;
-        }
-        //当金额为0时需要的硬币数目为0
-        dp[0] = 0;
-        for (int i = 0; i < coins.length; i++) {
-            //正序遍历：完全背包每个硬币可以选择多次
-            for (int j = coins[i]; j <= amount; j++) {
-                //只有dp[j-coins[i]]不是初始最大值时，该位才有选择的必要
-                if (dp[j - coins[i]] != max) {
-                    //选择硬币数目最小的情况
-                    dp[j] = Math.min(dp[j], dp[j - coins[i]] + 1);
-                }
-            }
-        }
-        return dp[amount] == max ? -1 : dp[amount];
-    }
-
     public static void main(String[] args) {
         String pat = "abba";
         String txt = "abbcabaabbaabc";
         KMPSearch kmp = new KMPSearch(pat);
-
-        System.out.println(kmp.search(txt));
-        txt.contains(pat);
-
-        int [] coins = {1,2,5};
-        System.out.println(kmp.change(11, coins));
     }
 }
