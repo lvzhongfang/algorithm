@@ -32,6 +32,25 @@ public class InsertionSort {
         }
     }
 
+    public static void insertionSort (int [][] arr, int order) {
+        for (int n = 1; n < arr.length; n++) {
+            int [] key = arr[n];
+            int m = n - 1;
+            if (InsertionSort.DESC == order) {
+                while (m >= 0 && key[0] >= arr[m][0] && key[1] >= arr[m][1]) {
+                    arr[m + 1] = arr[m];
+                    m = m - 1;
+                }
+            } else {
+                while (m >= 0 && key[0] <= arr[m][0] && key[1] <= arr[m][1]) {
+                    arr[m + 1] = arr[m];
+                    m = m - 1;
+                }
+            }
+            arr [m + 1] = key;
+        }
+    }
+
     public static void main(String[] args) {
         int [] arr = {4, 5, 3, 1, 6, 2, 7, 9, 8, 0};
         InsertionSort.insertionSort(arr, InsertionSort.DESC);

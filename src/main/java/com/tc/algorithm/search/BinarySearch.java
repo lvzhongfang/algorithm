@@ -15,17 +15,16 @@ public class BinarySearch {
     public static int search(int[] arr, int value) {
         int low = 0;
         int high = arr.length - 1;
-        int middle = (low + high) / 2;
+        int middle = 0;
 
-        while (middle <= high) {
+        while (low <= high) {
+            middle = (low + high) / 2;
             if (arr[middle] == value) {
                 return middle;
             } else if (arr[middle] > value) {
                 high = middle - 1;
-                middle = (low + high) / 2;
             } else {
                 low = middle + 1;
-                middle = (low + high) / 2;
             }
         }
         return -1;
