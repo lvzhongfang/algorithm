@@ -1,7 +1,5 @@
 package com.tc.algorithm.data.structure;
 
-import javafx.scene.chart.ValueAxis;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
