@@ -76,6 +76,54 @@ public class StringAlgorithm {
         return -1;
     }
 
+    public static String longestPalindrome (String s) {
+        //用数组分别记录长度，起点，终点
+        int [] res = new int [3];
+
+        for (int i = 0; i < s.length(); i++) {
+            int begin = i;
+            int end = i;
+            //奇数回文串，直接开始中心回文。
+            while (begin - 1 >= 0 && end + 1 < s.length() && s.charAt(begin - 1) == s.charAt(end + 1)) {
+                end++;
+                begin--;
+                if (end - begin > res[0]) {
+                    res[0] = end - begin;
+                    res[1] = begin;
+                    res[2] = end;
+                }
+            }
+            //偶数回文串，第一次先判断和下一个是否相等，然后中心回文
+            begin = i;
+            end = i + 1;
+            while (begin >= 0 && end < s.length() && s.charAt(begin) == s.charAt(end)) {
+                if (end - begin > res[0]) {
+                    res[0] = end - begin;
+                    res[1] = begin;
+                    res[2] = end;
+                }
+                end++;
+                begin--;
+            }
+        }
+        return s.substring(res[1], res[2] + 1);
+    }
+
+    public static String reverseString (String s) {
+        int right = s.length() - 1;
+        int left = 0;
+        char [] chars = s.toCharArray();
+        while (left < right) {
+            char temp = chars[left];
+            chars[left] = chars[right];
+            chars[right] = temp;
+            left++;
+            right--;
+        }
+
+        return new String(chars);
+    }
+
     public static void main(String[] args) {
         String [] strs = {"flower", "flow", "flight"};
 
@@ -90,5 +138,10 @@ public class StringAlgorithm {
         String needle = "c";
 
         System.out.println(StringAlgorithm.strStr(haystack, needle));
+
+        System.out.println("longest palindrome is " + StringAlgorithm.longestPalindrome("babadc"));
+
+        String s = "string";
+        System.out.println("string is '" + s + "' after reverse is '" + StringAlgorithm.reverseString(s) + "'");
     }
 }

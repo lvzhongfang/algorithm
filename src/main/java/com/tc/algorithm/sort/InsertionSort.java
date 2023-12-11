@@ -52,7 +52,7 @@ public class InsertionSort {
     }
 
     public static void main(String[] args) {
-        int [] arr = {4, 5, 3, 1, 6, 2, 7, 9, 8, 0};
+        int [] arr = {4, 2, 1, 3, 5};
         InsertionSort.insertionSort(arr, InsertionSort.DESC);
         for (int i = 0; i < arr.length; i++) {
             if (i != arr.length - 1) {
