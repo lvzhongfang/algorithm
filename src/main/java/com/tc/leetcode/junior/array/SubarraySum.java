@@ -26,6 +26,13 @@ public class SubarraySum {
         } else {
             System.out.println(result.get(0) + "," + result.get(1));
         }
+
+        int [] nums = {6,2,6,5,1,2};
+        System.out.println(SubarraySum.arrayPairSum(nums));
+
+        int [] numbers = {2, 7, 11,15};
+        int [] twoSum = SubarraySum.twoSum1(numbers, 9);
+        System.out.println("[" + twoSum[0] + "," + twoSum[1] + "]");
     }
 
     /**
@@ -78,4 +85,69 @@ public class SubarraySum {
         }
         return result;
     }
+
+    public static int arrayPairSum (int [] nums) {
+        int key = 0;
+        for (int n = 1; n < nums.length; n++) {
+            key = nums[n];
+            int m = n - 1;
+            while (m >= 0 && key < nums[m]) {
+                nums[m + 1] = nums[m];
+                m--;
+            }
+            nums[m + 1] = key;
+        }
+
+        int result = 0;
+        for (int i = 0; i < nums.length / 2; i++) {
+            result += nums[2 * i];
+        }
+
+        return result;
+    }
+
+    public static int[] twoSum (int[] numbers, int target) {
+        int [] result = new int[2];
+
+        for (int i = 0; i < numbers.length; i++) {
+            for (int n = i + 1; n < numbers.length; n++) {
+                if (numbers[i] + numbers[n] == target) {
+                    result[0] = i + 1;
+                    result[1] = n + 1;
+                    return result;
+                }
+
+                if (numbers[i] + numbers[n] > target) {
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static int[] twoSum1 (int[] numbers, int target) {
+
+        int [] result = new int[2];
+
+        int low = 0;
+        int high = numbers.length - 1;
+        while (low < high) {
+            int middle = (low + high) >>> 1;
+            if (numbers[low] + numbers[middle] > target) {
+                high = middle - 1;
+            } else if (numbers[low] + numbers[high] > target){
+                high--;
+            } else if (numbers[low] + numbers[high] < target) {
+                low++;
+            } else {
+                result[0] = low + 1;
+                result[1] = high + 1;
+                break;
+            }
+        }
+
+        return result;
+    }
+
 }
