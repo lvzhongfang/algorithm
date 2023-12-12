@@ -34,6 +34,107 @@ public class RemoveDuplicates {
         return left + 1;
     }
 
+    public static int removeElement (int [] nums) {
+        int slow = 0;
+        int fast = 0;
+
+        for (; fast < nums.length; fast++) {
+            if (nums[slow] != nums[fast]) {
+                slow = slow + 1;
+                nums[slow] = nums[fast];
+            }
+        }
+        return slow + 1;
+    }
+
+    public static int removeElement (int [] nums, int val) {
+        int slow = 0;
+        int fast = 0;
+        for (; fast < nums.length; fast++) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow += 1;
+            }
+        }
+        return slow;
+    }
+
+    public static int findMaxConsecutiveOnes(int[] nums) {
+        int max = 0;
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) {
+                count++;
+            } else {
+                if (max < count) {
+                    max = count;
+                }
+                count = 0;
+            }
+        }
+        if (max < count) {
+            max = count;
+        }
+        return max;
+    }
+
+    /**
+     * 给定一个含有n个正整数的数组和一个正整数 target 。
+     *
+     * 找出该数组中满足其总和大于等于 target 的长度最小的 连续子数组[numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+     * @param target
+     * @param nums
+     * @return
+     */
+    public static int minSubArrayLen(int target, int[] nums) {
+        int min = Integer.MAX_VALUE;
+
+        int n = 0;
+        int m = 0;
+        int sum = 0;
+
+        while (n < nums.length) {
+            sum += nums[n];
+            while (sum >= target) {
+                if (min > n - m + 1) {
+                    min = n - m + 1;
+                }
+                sum -= nums[m];
+                m++;
+            }
+            n++;
+        }
+        return min == Integer.MAX_VALUE ? 0:min;
+    }
+
+    public static int minSubArrayLen1(int target, int [] nums) {
+        int minLen = 0;
+
+        int currentSum = nums[0];
+        int j = 0;
+        for (int i = 1; i <= nums.length; ) {
+            while (currentSum >= target && j <= i) {
+                if (minLen == 0) {
+                    minLen = i - j;
+                } else if (minLen > i - j) {
+                    minLen = i - j;
+                }
+                currentSum = currentSum - nums[j];
+                j++;
+            }
+
+            if (currentSum < target) {
+                if (i >= nums.length) {
+                    break;
+                }
+                currentSum += nums[i];
+                i++;
+            }
+        }
+
+        return minLen;
+    }
+
     public static void main(String[] args) {
         int[] arr = {0, 0, 1, 2, 2, 3, 3, 4, 4};
         int k = RemoveDuplicates.removeDuplicates(arr);
@@ -41,5 +142,29 @@ public class RemoveDuplicates {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
+        int[] nums = {0, 0, 1, 2, 2, 3, 3, 4, 4};
+        int idx = RemoveDuplicates.removeElement(nums);
+        for (int i = 0; i < idx; i++) {
+            System.out.print(nums[i] + " ");
+        }
+        System.out.println();
+
+        //nums = new int [] {0, 1, 2, 2, 3, 0, 4, 2};
+        nums = new int [] {3, 2, 2, 3};
+        idx = RemoveDuplicates.removeElement(nums, 2);
+        for (int i = 0; i < idx; i++) {
+            System.out.print(nums[i] + " ");
+        }
+        System.out.println();
+
+        nums = new int [] {1,0,1,1,0,1};
+
+        System.out.println(RemoveDuplicates.findMaxConsecutiveOnes(nums));
+
+        //nums = new int [] {2,3,1,2,4,3};
+        nums = new int [] {1,4,4};
+        //nums = new int [] {1,1,1,1,1,1,1,1};
+        //nums = new int [] {1,2,3,4,5};
+        System.out.println(RemoveDuplicates.minSubArrayLen1(4, nums));
     }
 }

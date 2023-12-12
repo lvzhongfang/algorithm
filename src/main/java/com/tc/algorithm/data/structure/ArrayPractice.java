@@ -208,6 +208,34 @@ public class ArrayPractice {
         return result;
     }
 
+    /**
+     * 杨辉三角
+     * @param numRows
+     * @return
+     */
+    public static List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 1; i <= numRows; i++) {
+            if (i == 1) {
+                List<Integer> l = new ArrayList<>();
+                l.add(1);
+                result.add(l);
+            } else {
+                List<Integer> preL = result.get(i - 2);
+                List<Integer> l = new ArrayList<>();
+                for (int n = 0; n < i; n++) {
+                    if (n == 0 || n == i - 1) {
+                        l.add(1);
+                    } else {
+                        l.add(preL.get(n - 1) + preL.get(n));
+                    }
+                }
+                result.add(l);
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         //int [] arr = {1, 7, 3, 6, 5, 6};
         //int [] arr = {-1,-1,-1,-1,-1,-1};
@@ -238,5 +266,18 @@ public class ArrayPractice {
         }
         System.out.print("]\n");
 
+        List<List<Integer>> l = ArrayPractice.generate(5);
+
+        for (int i = 0; i < l.size(); i++) {
+            List<Integer> list = l.get(i);
+            System.out.print("[");
+            for (int n = 0; n < list.size(); n++) {
+                System.out.print(list.get(n));
+                if (n < list.size() - 1) {
+                    System.out.print(",");
+                }
+            }
+            System.out.print("] ");
+        }
     }
 }
