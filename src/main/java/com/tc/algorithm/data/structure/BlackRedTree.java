@@ -73,6 +73,77 @@ public class BlackRedTree {
         node.parent = r;
     }
 
+    public void rbInsert (int value) {
+        Node z = new Node(value, null, BlackRedTree.RED);
+        Node y = null;
+        Node x = root;
+
+        while (x != null) {
+            y = x;
+            if (value < x.data) {
+                x = x.left;
+            } else {
+                x = x.right;
+            }
+        }
+        z.parent = y;
+        if (y == null) {
+            root = z;
+        } else {
+            if (value < y.data) {
+                y.left = z;
+            } else {
+                y.right = z;
+            }
+        }
+
+        this.rbInsertFixUp(z);
+    }
+
+    public void rbInsertFixUp (Node node) {
+        while (node.parent.colour == BlackRedTree.RED) {
+            //父节点是左子树
+            if (node.parent == node.parent.parent.left) {
+                //uncle node
+                Node y = node.parent.parent.right;
+                if (y.colour == BlackRedTree.RED) {
+                    node.parent.colour = BlackRedTree.BLACK;
+                    y.colour = BlackRedTree.BLACK;
+                    node.parent.parent.colour = BlackRedTree.RED;
+                    node = node.parent.parent;
+                } else {
+                    if (node == node.parent.right) {
+                        node = node.parent;
+                        this.leftRotate(node);
+                    }
+
+                    node.parent.colour = BlackRedTree.BLACK;
+                    node.parent.parent.colour = BlackRedTree.RED;
+                    this.rightRotate(node.parent.parent);
+                }
+            } else {
+                //父节点是右子树
+                Node y = node.parent.parent.left;
+                if (y.colour == BlackRedTree.RED) {
+                    node.parent.colour = BlackRedTree.BLACK;
+                    y.colour = BlackRedTree.BLACK;
+                    node.parent.parent.colour = BlackRedTree.RED;
+                    node = node.parent.parent;
+                } else {
+                    if (node == node.parent.left) {
+                        node = node.parent;
+                        this.rightRotate(node);
+                    }
+
+                    node.parent.colour = BlackRedTree.BLACK;
+                    node.parent.parent.colour = BlackRedTree.RED;
+                    this.leftRotate(node.parent.parent);
+                }
+            }
+        }
+        root.colour = BlackRedTree.BLACK;
+    }
+
     public void fixUp (Node root, Node pt) {
 
     }
