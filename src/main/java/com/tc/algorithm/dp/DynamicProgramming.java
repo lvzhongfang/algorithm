@@ -17,6 +17,12 @@ public class DynamicProgramming {
         prices = new int []{7, 1, 5, 3, 6, 4};
 
         System.out.println(DynamicProgramming.maxProfit(prices));
+
+        int [] cost = {2, 5, 20};
+        System.out.println(DynamicProgramming.minCostClimbingStairs(cost));
+
+        System.out.println(DynamicProgramming.fibonacci(4));
+
     }
 
     /**
@@ -131,4 +137,57 @@ public class DynamicProgramming {
         //最后一天肯定是手里没有股票的时候，利润才会最大，只需要返回dp[length - 1][0]即可
         return dp[prices.length - 1][0];
     }
+
+    /**
+     * 给定一个整数数组cost  ，其中 cost[i] 是从楼梯第
+     * i个台阶向上爬需要支付的费用，下标从0开始。一旦你支付此费用，即可选择向上爬一个或者两个台阶。
+     *
+     * 你可以选择从下标为 0 或下标为 1 的台阶开始爬楼梯。
+     *
+     * 请你计算并返回达到楼梯顶部的最低花费。
+     *
+     * 数据范围：数组长度满足 1≤n≤10^5，数组中的值满足 1≤costi≤10^4
+     *
+     * 输入：
+     * [2,5,20]
+     * 返回值：5
+     * 说明：
+     * 你将从下标为1的台阶开始，支付5 ，向上爬两个台阶，到达楼梯顶部。总花费为5
+     * @param cost
+     * @return
+     */
+    public static int minCostClimbingStairs (int[] cost) {
+        // write code here
+        int [] dp = new int [cost.length + 1];
+        for (int i = 2; i <= cost.length; i++) {
+            dp [i] = Math.min(dp [i - 1] + cost [i - 1], dp [i - 2] + cost [i - 2]);
+        }
+
+        return dp [cost.length];
+    }
+
+    public static int fibonacci (int n) {
+        // write code here
+        // f(i) = f(i - 1) + f(i - 2);
+        /*if (n == 1) {
+            return 1;
+        } else if (n == 2) {
+            return 1;
+        } else {
+            return DynamicProgramming.fibonacci(n - 1) + DynamicProgramming.fibonacci(n - 2);
+        }*/
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+
+        int [] dp = new int [n + 1];
+        dp[1] = 1;
+        dp[2] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[n];
+    }
+
 }
