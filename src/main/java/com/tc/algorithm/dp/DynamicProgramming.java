@@ -166,6 +166,11 @@ public class DynamicProgramming {
         return dp [cost.length];
     }
 
+    /**
+     * 斐波那契数列
+     * @param n
+     * @return
+     */
     public static int fibonacci (int n) {
         // write code here
         // f(i) = f(i - 1) + f(i - 2);
@@ -190,4 +195,23 @@ public class DynamicProgramming {
         return dp[n];
     }
 
+    /**
+     * 一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个 n 级的台阶总共有多少种跳法（先后次序不同算不同的结果）
+     * @param number
+     * @return
+     */
+    public static int jumpFloor (int number) {
+        if (number == 1) {
+            return 1;
+        }
+
+        int [] dp = new int[number + 1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <= number; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+
+        return dp[number];
+    }
 }
