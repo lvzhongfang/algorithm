@@ -73,6 +73,12 @@ public class LCS {
         return res;
     }
 
+    /**
+     * 最长公共子序列，序列不要求在原始字符串中连续
+     * @param s1 字符串
+     * @param s2 字符串
+     * @return s1与s2中公共的最长子序列
+     */
     public static String LCS1 (String s1, String s2) {
         if (s1.length() == 0 || s2.length() == 0) {
             return "-1";
