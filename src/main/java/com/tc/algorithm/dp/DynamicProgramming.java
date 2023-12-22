@@ -11,6 +11,8 @@ public class DynamicProgramming {
         int [] coins = {1,2,5};
         System.out.println(DynamicProgramming.change(coins, 11));
 
+        System.out.println(DynamicProgramming.change1(coins, 11));
+
         int [] prices = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
         System.out.println(DynamicProgramming.cutRod(prices, 30));
 
@@ -59,6 +61,29 @@ public class DynamicProgramming {
             }
         }
         return dp[amount] == max ? -1 : dp[amount];
+    }
+
+    /**
+     * 给你一个整数数组 coins 表示不同面额的硬币，另给一个整数 amount 表示总金额。
+     * 请你计算并返回可以凑成总金额的硬币组合数。如果任何硬币组合都无法凑出总金额，返回 0 。
+     * 假设每一种面额的硬币有无限个。
+     * 题目数据保证结果符合 32 位带符号整数。
+     *
+     * dp[i] 保存金额为i的组合数
+     * dp[i] = dp[i] + dp[i - coins]
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public static int change1 (int [] coins, int amount) {
+        int [] dp = new int [amount + 1];
+        dp[0] = 1;
+        for (int i = 0; i < coins.length; i++) {
+            for (int j = coins[i]; j <= amount; j++) {
+                dp[j] = dp[j] + dp[j - coins[i]];
+            }
+        }
+        return dp[amount];
     }
 
     public static int cutRod (int [] prices, int rodLength) {
@@ -195,7 +220,6 @@ public class DynamicProgramming {
 
         int [] dp = new int [n + 1];
         dp[1] = 1;
-        dp[2] = 1;
         for (int i = 2; i <= n; i++) {
             dp[i] = dp[i - 1] + dp[i - 2];
         }
