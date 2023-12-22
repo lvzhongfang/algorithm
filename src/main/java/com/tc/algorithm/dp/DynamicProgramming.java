@@ -1,5 +1,7 @@
 package com.tc.algorithm.dp;
 
+import java.util.HashMap;
+
 /**
  * desc dynamic programming
  *
@@ -14,7 +16,7 @@ public class DynamicProgramming {
         System.out.println(DynamicProgramming.change1(coins, 11));
 
         int [] prices = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
-        System.out.println(DynamicProgramming.cutRod(prices, 30));
+        System.out.println(DynamicProgramming.cutRod1(prices, 11));
 
         prices = new int []{7, 1, 5, 3, 6, 4};
 
@@ -91,12 +93,64 @@ public class DynamicProgramming {
         dp [0] = 0;
 
         for (int n = 1; n <= rodLength; n++) {
+            //当前切割后的最大利润
             int q = Integer.MIN_VALUE;
+            //长度为n的钢锯条切割后的最大利润计算
             for (int m = 1; m <= n; m++) {
+                //prices[(m - 1) % prices.length] + dp[n - m]
+                //当n = 2时，m = 1 时 q = prices[(1 - 1) % prices.length] + dp[2 - 1] 表示将长度为2的钢锯条分成两段长度为1的钢锯条的利润
+                //当n = 2时，m = 2 时 q = prices[(2 - 1) % prices.length] + dp[2 - 2] 表示将长度为2的钢锯条分成1段长度为2的钢锯条的利润
+                //每次取最大值，最后将最大值赋给dp[n]，即表示长度为n的钢锯条的最大利润
                 q = Math.max(q, prices[(m - 1) % prices.length] + dp[n - m]);
             }
             dp[n] = q;
         }
+        return dp[rodLength];
+    }
+
+    /**
+     * 切割钢锯条，求最大利润并打印最大利润时的切割方案
+     * @param prices
+     * @param rodLength
+     * @return
+     */
+    public static int cutRod1 (int [] prices, int rodLength) {
+        int [] dp = new int [rodLength + 1];
+        dp [0] = 0;
+        //记录最大利润时的切割方案，key = 11， value = int [2] = {m, n - m} 表示长度为11的钢锯条的切割方案是，
+        // 将钢锯条切割成长度为m与11 - m，11 - m的方案保存在map中，循环找，直到map没有返回值
+        HashMap<Integer, int[]> map = new HashMap<>();
+
+        for (int n = 1; n <= rodLength; n++) {
+            //当前切割后的最大利润
+            int q = Integer.MIN_VALUE;
+            //长度为n的钢锯条切割后的最大利润计算
+            for (int m = 1; m <= n; m++) {
+                //prices[(m - 1) % prices.length] + dp[n - m]
+                //当n = 2时，m = 1 时 q = prices[(1 - 1) % prices.length] + dp[2 - 1] 表示将长度为2的钢锯条分成两段长度为1的钢锯条的利润
+                //当n = 2时，m = 2 时 q = prices[(2 - 1) % prices.length] + dp[2 - 2] 表示将长度为2的钢锯条分成1段长度为2的钢锯条的利润
+                //每次取最大值，最后将最大值赋给dp[n]，即表示长度为n的钢锯条的最大利润
+                int temp = prices[(m - 1) % prices.length] + dp[n - m];
+                if (q < temp) {
+                   q = temp;
+                   if (map.containsKey(n)) {
+                       map.remove(n);
+                       map.put(n, new int [] {m, n - m});
+                   } else {
+                       map.put(n, new int [] {m, n - m});
+                   }
+                }
+            }
+            dp[n] = q;
+        }
+
+        int [] array = map.get(rodLength);
+
+        while (array != null && array.length > 0) {
+            System.out.print(array[0] + ",");
+            array = map.get(array[1]);
+        }
+        System.out.println();
         return dp[rodLength];
     }
 
