@@ -43,7 +43,41 @@ public class ArrayPrograms {
             pre = cur;
             cur = cur.next;
         }
-
+        /**
+         * -1,0，1，2，3，4，5
+         * -1,1，2，3，4，5，6
+         * res -> node(-1), head -> node(1), res.next = head -> node(1), pre = res -> node(-1), cur = head -> node(1)
+         * m = 2, n = 4
+         * for i = 1
+         * pre = cur = head -> node(1)
+         * cur = cur.next = head.next -> node(2)
+         * for i = 2 i < m false break
+         *
+         * cur -> node(2)
+         * pre -> node(1)
+         *
+         * for i = m = 2
+         * begin
+         * -1 -> 1 -> 2->3->4->5->6
+         *  |   |    |
+         * res pre curr
+         *
+         *        /-----\
+         *       /   /---\-\
+         * -1 ->1   2 <- 3  4->5->6
+         *  |   |   |    |
+         *  res pre cur temp
+         *
+         *  for i = m = 3
+         *
+         *        /-------\
+         *       /   /-----\--\
+         * -1 ->1   2 <- 3<-4  5->6
+         *  |   |   |       |
+         *  res pre cur   temp
+         *  res.next = node(1)
+         *  输出顺序：1,4,3,2,5,6
+         */
         for (int i = m; i < n; i++) {
             ListNode temp = cur.next;
             cur.next = temp.next;
