@@ -1,11 +1,11 @@
 package com.tc.algorithm.data.structure;
 
 /**
- * desc black red tree
+ * desc red black tree
  *
  * @author lvzf 2023年11月24日
  */
-public class BlackRedTree {
+public class RedBlackTree {
 
     public static final int BLACK = 0;
 
@@ -74,7 +74,7 @@ public class BlackRedTree {
     }
 
     public void rbInsert (int value) {
-        Node z = new Node(value, null, BlackRedTree.RED);
+        Node z = new Node(value, null, RedBlackTree.RED);
         Node y = null;
         Node x = root;
 
@@ -101,15 +101,15 @@ public class BlackRedTree {
     }
 
     public void rbInsertFixUp (Node node) {
-        while (node.parent.colour == BlackRedTree.RED) {
+        while (node.parent.colour == RedBlackTree.RED) {
             //父节点是左子树
             if (node.parent == node.parent.parent.left) {
                 //uncle node
                 Node y = node.parent.parent.right;
-                if (y.colour == BlackRedTree.RED) {
-                    node.parent.colour = BlackRedTree.BLACK;
-                    y.colour = BlackRedTree.BLACK;
-                    node.parent.parent.colour = BlackRedTree.RED;
+                if (y.colour == RedBlackTree.RED) {
+                    node.parent.colour = RedBlackTree.BLACK;
+                    y.colour = RedBlackTree.BLACK;
+                    node.parent.parent.colour = RedBlackTree.RED;
                     node = node.parent.parent;
                 } else {
                     if (node == node.parent.right) {
@@ -117,17 +117,17 @@ public class BlackRedTree {
                         this.leftRotate(node);
                     }
 
-                    node.parent.colour = BlackRedTree.BLACK;
-                    node.parent.parent.colour = BlackRedTree.RED;
+                    node.parent.colour = RedBlackTree.BLACK;
+                    node.parent.parent.colour = RedBlackTree.RED;
                     this.rightRotate(node.parent.parent);
                 }
             } else {
                 //父节点是右子树
                 Node y = node.parent.parent.left;
-                if (y.colour == BlackRedTree.RED) {
-                    node.parent.colour = BlackRedTree.BLACK;
-                    y.colour = BlackRedTree.BLACK;
-                    node.parent.parent.colour = BlackRedTree.RED;
+                if (y.colour == RedBlackTree.RED) {
+                    node.parent.colour = RedBlackTree.BLACK;
+                    y.colour = RedBlackTree.BLACK;
+                    node.parent.parent.colour = RedBlackTree.RED;
                     node = node.parent.parent;
                 } else {
                     if (node == node.parent.left) {
@@ -135,13 +135,13 @@ public class BlackRedTree {
                         this.rightRotate(node);
                     }
 
-                    node.parent.colour = BlackRedTree.BLACK;
-                    node.parent.parent.colour = BlackRedTree.RED;
+                    node.parent.colour = RedBlackTree.BLACK;
+                    node.parent.parent.colour = RedBlackTree.RED;
                     this.leftRotate(node.parent.parent);
                 }
             }
         }
-        root.colour = BlackRedTree.BLACK;
+        root.colour = RedBlackTree.BLACK;
     }
 
     public void fixUp (Node root, Node pt) {
@@ -154,7 +154,7 @@ public class BlackRedTree {
 
     private Node addRecursive (Node node, int value, int colour) {
         if (node == null) {
-            return new Node(value, null, BlackRedTree.BLACK);
+            return new Node(value, null, RedBlackTree.BLACK);
         } else {
             if (node.data > value) {
                 node.left = this.addRecursive(node.left, value, colour);
