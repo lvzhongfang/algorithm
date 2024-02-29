@@ -15,6 +15,10 @@ public class RedBlackTree {
 
     /**
      * Function performing right rotation of the passed node
+     * 节点旋转为其左孩子的右孩子，下图即将X节点旋转为其左孩子Y的右孩子
+     * 1. 将X的左孩子赋值给临时变量
+     * 2. 将X左孩子的右孩子赋值给X的左孩子
+     * 3. 将临时变量的右孩子指向X
      *
      *         X           Y
      *        / \         / \
@@ -45,7 +49,7 @@ public class RedBlackTree {
 
     /**
      * Function performing left rotation of the passed node
-     *
+     * 左旋是将某个节点旋转为其右孩子的左孩子
      *         X                Y
      *        / \              / \
      *       Z   Y   -->      X   Yb
