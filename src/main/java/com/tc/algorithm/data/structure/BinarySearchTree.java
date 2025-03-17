@@ -10,12 +10,10 @@ package com.tc.algorithm.data.structure;
  */
 public class BinarySearchTree<T> {
 
-    public static final Node nil = new Node(null);
-
     private Node<T> root;
 
     public void inorderTreeWalk (Node<T> root) {
-        if (root != nil) {
+        if (!isNullNode(root)) {
             inorderTreeWalk(root.left);
             System.out.println("key is " + root.key + ", data is " + root.data);
             inorderTreeWalk(root.right);
@@ -23,7 +21,7 @@ public class BinarySearchTree<T> {
     }
 
     public Node<T> treeSearch (Node<T> root, Integer key) {
-        if (root == nil || key.equals(root.getKey())) {
+        if (isNullNode(root) || key.equals(root.getKey())) {
             return root;
         }
 
@@ -35,11 +33,11 @@ public class BinarySearchTree<T> {
     }
 
     public Node<T> iterativeTreeSearch (Node<T> root, Integer key) {
-        if (root == nil || key.equals(root.getKey())) {
+        if (isNullNode(root) || key.equals(root.getKey())) {
             return root;
         }
 
-        while (root != nil && !key.equals(root.getKey())) {
+        while (!isNullNode(root) && !key.equals(root.getKey())) {
             if (key < root.getKey()) {
                 root = root.getLeft();
             } else {
@@ -50,7 +48,7 @@ public class BinarySearchTree<T> {
     }
 
     public Node<T> treeMinimum (Node<T> root) {
-        while (root.getLeft() != nil) {
+        while (!isNullNode(root.getLeft())) {
             root = root.getLeft();
         }
 
@@ -58,7 +56,7 @@ public class BinarySearchTree<T> {
     }
 
     public Node<T> treeMaximum (Node<T> root) {
-        while (root.getRight() != nil) {
+        while (!isNullNode(root.getRight())) {
             root = root.getRight();
         }
         return root;
@@ -72,12 +70,12 @@ public class BinarySearchTree<T> {
      * @return
      */
     public Node<T> treeSuccessor (Node<T> node) {
-        if (node.getRight() != nil) {
+        if (!isNullNode(node.getRight())) {
             return this.treeMinimum(node.getRight());
         }
 
         Node<T> y = node.getParent();
-        while (y != nil && y.getRight() == node) {
+        while (!isNullNode(y) && y.getRight() == node) {
             node = y;
             y = y.getParent();
         }
@@ -86,12 +84,12 @@ public class BinarySearchTree<T> {
     }
 
     public Node<T> treePredecessor (Node<T> node) {
-        if (node.getLeft() != nil) {
+        if (!isNullNode(node.getLeft())) {
             return this.treeMaximum(node.getLeft());
         }
 
         Node<T> y = node.getParent();
-        while (y != nil && node == y.getLeft()) {
+        while (!isNullNode(y) && node == y.getLeft()) {
             node = y;
             y = y.getParent();
         }
@@ -100,25 +98,29 @@ public class BinarySearchTree<T> {
     }
 
     public void treeInsert (BinarySearchTree<T> t, Node<T> key) {
-        Node<T> y = nil;
-        Node<T> x = t.root;
-
-        while (x != nil) {
-            y = x;
-            if (key.getKey() < x.getKey()) {
-                x = x.getLeft();
-            } else {
-                x = x.getRight();
-            }
-        }
-
-        key.setParent(y);
-        if (y == nil) {
-            t.root = key;
-        } else if (key.getKey() < y.getKey()) {
-            y.setLeft(key);
+        if (isNullNode(root) || root == null) {
+            root = key;
         } else {
-            y.setRight(key);
+            Node<T> y = null;
+            Node<T> x = t.root;
+
+            while (!isNullNode(x)) {
+                y = x;
+                if (key.getKey() < x.getKey()) {
+                    x = x.getLeft();
+                } else {
+                    x = x.getRight();
+                }
+            }
+
+            key.setParent(y);
+            if (isNullNode(y)) {
+                t.root = key;
+            } else if (key.getKey() < y.getKey()) {
+                y.setLeft(key);
+            } else {
+                y.setRight(key);
+            }
         }
     }
 
@@ -168,9 +170,9 @@ public class BinarySearchTree<T> {
      * @param node
      */
     public void treeDelete (BinarySearchTree<T> t, Node<T> node) {
-        if (node.left == nil) {
+        if (isNullNode(node.left)) {
             transplant(t, node, node.right);
-        } else if (node.right == nil) {
+        } else if (isNullNode(node.right)) {
             transplant(t, node, node.left);
         } else {
             Node<T> y = treeMinimum(node.right);
@@ -188,7 +190,7 @@ public class BinarySearchTree<T> {
     }
 
     public void transplant (BinarySearchTree<T> t, Node<T> u, Node<T> v) {
-        if (u.parent == nil) {
+        if (isNullNode(u.parent)) {
             t.root = v;
         } else if (u == u.parent.left) {
             u.parent.left = v;
@@ -196,9 +198,25 @@ public class BinarySearchTree<T> {
             u.parent.right = v;
         }
 
-        if (v != nil) {
+        if (!isNullNode(v)) {
             v.parent = u.parent;
         }
+    }
+
+    private boolean isNullNode (Node<T> t) {
+        if (t == null) {
+            return true;
+        }
+
+        return t.getKey() == null;
+    }
+
+    public Node<T> getRoot() {
+        return root;
+    }
+
+    public void setRoot(Node<T> root) {
+        this.root = root;
     }
 
     public static class Node<T> {
@@ -255,5 +273,22 @@ public class BinarySearchTree<T> {
         public void setParent(Node<T> parent) {
             this.parent = parent;
         }
+    }
+
+    public static void main(String[] args) {
+        int [] array = {4, 6, 3, 1, 2, 9, 7, 8};
+
+        BinarySearchTree<String> bst = new BinarySearchTree<>();
+        Node<String> root = new Node<>(5);
+        root.setData("node 5");
+        bst.setRoot(root);
+
+        for (int i = 0; i < array.length; i++) {
+            Node<String> node = new Node<>(array[i]);
+            node.setData("node " + array[i]);
+            bst.treeInsert(bst, node);
+        }
+
+        bst.inorderTreeWalk(bst.root);
     }
 }
